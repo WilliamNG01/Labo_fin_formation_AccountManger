@@ -1,0 +1,6 @@
+@Labo_fin_formation.APIAccountManagement_HostAddress = http://localhost:5122
+
+GET {{Labo_fin_formation.APIAccountManagement_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

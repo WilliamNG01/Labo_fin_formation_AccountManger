@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35728.132 d17.12
+VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Labo_fin_formation.BaseDonneeIdentity", "Labo_fin_formation.BaseDonneeIdentity\Labo_fin_formation.BaseDonneeIdentity.sqlproj", "{891767DD-021B-4F7D-86AD-F58181EF0D0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labo_fin_formation.APIAccountManagement", "Labo_fin_formation.APIAccountManagement\Labo_fin_formation.APIAccountManagement.csproj", "{F191EC5F-61CC-4A17-864C-C6DEA1AD223A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,10 @@ Global
 		{891767DD-021B-4F7D-86AD-F58181EF0D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{891767DD-021B-4F7D-86AD-F58181EF0D0A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{891767DD-021B-4F7D-86AD-F58181EF0D0A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F191EC5F-61CC-4A17-864C-C6DEA1AD223A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F191EC5F-61CC-4A17-864C-C6DEA1AD223A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F191EC5F-61CC-4A17-864C-C6DEA1AD223A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F191EC5F-61CC-4A17-864C-C6DEA1AD223A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
