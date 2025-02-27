@@ -1,12 +1,12 @@
-﻿-- 1. Créer la base de données Identity
-IF NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = 'OuESTMonMedecinIdentityDB')
+﻿-- 1. Créer la base de données fl_db_identity
+IF NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = 'fl_db_identity')
 BEGIN
-    CREATE DATABASE OuESTMonMedecinIdentityDB;
+    CREATE DATABASE fl_db_identity;
 END
 GO
 
 -- 2. Se connecter à la base
-USE OuESTMonMedecinIdentityDB;
+USE fl_db_identity;
 GO
 
 -- 3. Créer un schéma spécifique pour les tables Identity
@@ -55,8 +55,8 @@ BEGIN
 END
 GO
 
--- 5. Créer les utilisateurs associés dans la base OuESTMonMedecinIdentityDB
-USE OuESTMonMedecinIdentityDB;
+-- 5. Créer les utilisateurs associés dans la base fl_db_identity
+USE fl_db_identity;
 GO
 
 -- a.1. Utilisateur pour l'application

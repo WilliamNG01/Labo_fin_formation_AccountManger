@@ -5,5 +5,6 @@ namespace Labo_fin_formation.APIAccountManagement.Domain.Entities
     public class ApplicationRole: IdentityRole
     {
         public string? Description { get; set; }
+        public int RoleLevel { get; set; }
     }
 }

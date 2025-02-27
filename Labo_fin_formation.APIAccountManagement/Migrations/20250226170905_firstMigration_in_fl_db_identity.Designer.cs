@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Labo_fin_formation.APIAccountManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250224150221_create")]
-    partial class create
+    [Migration("20250226170905_firstMigration_in_fl_db_identity")]
+    partial class firstMigration_in_fl_db_identity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,9 @@ namespace Labo_fin_formation.APIAccountManagement.Migrations
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("RoleLevel")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

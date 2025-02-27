@@ -1,0 +1,6 @@
+@Labo_fin_formation.DocumentManager_HostAddress = http://localhost:5053
+
+GET {{Labo_fin_formation.DocumentManager_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

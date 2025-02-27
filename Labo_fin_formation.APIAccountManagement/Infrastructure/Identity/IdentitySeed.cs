@@ -10,13 +10,26 @@ namespace Labo_fin_formation.APIAccountManagement.Infrastructure.Identity
             var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            string[] roles = { "SuperAdmin", "Admin", "Médecin", "Infirmier", "Coordinateur", "Employé", "Bénévole", "Fournisseur", "Patient", "DefaultUser" };
-
-            foreach (var roleName in roles)
+            Dictionary<int, string> roles = new()
             {
-                if (!await roleManager.RoleExistsAsync(roleName))
+                { 0, "DefaultUser" },
+                { 1, "Bénévole" },
+                { 2, "Fournisseur" },
+                { 3, "Patient" },
+                { 4, "Employé" },
+                { 5, "Coordinateur" },
+                { 6, "Infirmier" },
+                { 7, "Médecin" },
+                { 8, "Admin" },
+                { 9, "SuperAdmin" }
+            };
+
+
+            foreach (var role in roles)
+            {
+                if (!await roleManager.RoleExistsAsync(role.Value))
                 {
-                    await roleManager.CreateAsync(new ApplicationRole { Name = roleName, Description = $"{roleName} Role" });
+                    await roleManager.CreateAsync(new ApplicationRole { Name = role.Value, Description = $"{role.Value} Role", RoleLevel = role.Key });
                 }
             }
         }
