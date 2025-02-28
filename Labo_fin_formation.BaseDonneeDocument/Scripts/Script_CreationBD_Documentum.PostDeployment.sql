@@ -199,3 +199,26 @@ UNION ALL
 SELECT 'Bénévole', Id FROM scty.Policies WHERE Name = 'InternalDocumentsPolicy'
 UNION ALL
 SELECT 'DefaultUser', Id FROM scty.Policies WHERE Name = 'DefaultRestrictedPolicy';
+
+  INSERT INTO [fl_db_medical_documents].[dcmt].[Documents] (Id, Name, Path, PriorityLevel, CreatedBy, CreatedName, CreatedAt)
+VALUES
+  (NEWID(), 'Document_1', '/documents/doc1.pdf', FLOOR(RAND() * 4) + 1, 'a39182c1-7a5f-47c7-9002-03dabdbdefe0', 'janeDoe', GETDATE()),
+  (NEWID(), 'Document_2', '/documents/doc2.pdf', FLOOR(RAND() * 4) + 1, 'a39182c1-7a5f-47c7-9002-03dabdbdefe0', 'janeDoe', GETDATE()),
+  (NEWID(), 'Document_3', '/documents/doc3.pdf', FLOOR(RAND() * 4) + 1, 'a39182c1-7a5f-47c7-9002-03dabdbdefe0', 'janeDoe', GETDATE()),
+  (NEWID(), 'Document_4', '/documents/doc4.pdf', FLOOR(RAND() * 4) + 1, 'a39182c1-7a5f-47c7-9002-03dabdbdefe0', 'janeDoe', GETDATE()),
+  (NEWID(), 'Document_5', '/documents/doc5.pdf', FLOOR(RAND() * 4) + 1, 'a39182c1-7a5f-47c7-9002-03dabdbdefe0', 'janeDoe', GETDATE()),
+  (NEWID(), 'Document_6', '/documents/doc6.pdf', FLOOR(RAND() * 4) + 1, 'a39182c1-7a5f-47c7-9002-03dabdbdefe0', 'janeDoe', GETDATE()),
+  (NEWID(), 'Document_7', '/documents/doc7.pdf', FLOOR(RAND() * 4) + 1, 'a39182c1-7a5f-47c7-9002-03dabdbdefe0', 'janeDoe', GETDATE());
+
+INSERT INTO [fl_db_medical_documents].[dcmt].[Documents] (Id, Name, Path, PriorityLevel, CreatedBy, CreatedName, CreatedAt)
+VALUES
+  (NEWID(), 'Rapport_Annuel', '/documents/rapport_annuel.pdf', FLOOR(RAND() * 4) + 1, '0e9b4e2d-fd84-4fde-9257-7e323cc6fbb8', 'JohnDoe', GETDATE()),
+  (NEWID(), 'Contrat_Client', '/documents/contrat_client.docx', FLOOR(RAND() * 4) + 1, '0e9b4e2d-fd84-4fde-9257-7e323cc6fbb8', 'JohnDoe', GETDATE()),
+  (NEWID(), 'Facture_Janvier', '/documents/facture_janvier.xlsx', FLOOR(RAND() * 4) + 1, '0e9b4e2d-fd84-4fde-9257-7e323cc6fbb8', 'JohnDoe', GETDATE()),
+  (NEWID(), 'Plan_Projet', '/documents/plan_projet.pptx', FLOOR(RAND() * 4) + 1, '0e9b4e2d-fd84-4fde-9257-7e323cc6fbb8', 'JohnDoe', GETDATE()),
+  (NEWID(), 'Compte_Rendu_Réunion', '/documents/compte_rendu.pdf', FLOOR(RAND() * 4) + 1, '0e9b4e2d-fd84-4fde-9257-7e323cc6fbb8', 'JohnDoe', GETDATE()),
+  (NEWID(), 'Photo_Événement', '/documents/photo_evenement.jpg', FLOOR(RAND() * 4) + 1, '0e9b4e2d-fd84-4fde-9257-7e323cc6fbb8', 'JohnDoe', GETDATE()),
+  (NEWID(), 'Vidéo_Promotionnelle', '/documents/video_promo.mp4', FLOOR(RAND() * 4) + 1, '0e9b4e2d-fd84-4fde-9257-7e323cc6fbb8', 'JohnDoe', GETDATE()),
+  (NEWID(), 'Rapport_Financier', '/documents/rapport_financier.pdf', FLOOR(RAND() * 4) + 1, '0e9b4e2d-fd84-4fde-9257-7e323cc6fbb8', 'JohnDoe', GETDATE()),
+  (NEWID(), 'Note_Interne', '/documents/note_interne.txt', FLOOR(RAND() * 4) + 1, '0e9b4e2d-fd84-4fde-9257-7e323cc6fbb8', 'JohnDoe', GETDATE()),
+  (NEWID(), 'Données_Brut', '/documents/donnees_brut.csv', FLOOR(RAND() * 4) + 1, '0e9b4e2d-fd84-4fde-9257-7e323cc6fbb8', 'JohnDoe', GETDATE());
