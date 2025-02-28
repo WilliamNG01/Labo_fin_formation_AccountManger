@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using static Labo_fin_formation.APIAccountManagement.CQRS_Commands.UserCommands;
 using System.Threading.Tasks;
+using static Labo_fin_formation.APIAccountManagement.CQRS_Queries.GetUserQueries;
+using Labo_fin_formation.APIAccountManagement.Models.DTOs;
 
 namespace Labo_fin_formation.APIAccountManagement.CQRS_Handlers
 {
@@ -75,7 +77,6 @@ namespace Labo_fin_formation.APIAccountManagement.CQRS_Handlers
             }
         }
 
-        // Handlers/LogoutUserHandler.cs
         public class LogoutUserHandler : IRequestHandler<LogoutUserCommand>
         {
             private readonly SignInManager<ApplicationUser> _signInManager;
@@ -89,6 +90,25 @@ namespace Labo_fin_formation.APIAccountManagement.CQRS_Handlers
             {
                 await _signInManager.SignOutAsync();
             }
+        }
+
+        public class GetUserByIdHandler: IRequestHandler<GetUserByIDQuery, UserDto>
+        {
+            private readonly UserManager<ApplicationUser> _userManager;
+
+            public GetUserByIdHandler(UserManager<ApplicationUser> userManager)
+            {
+                _userManager = userManager;
+            }
+
+            public async Task<UserDto?> Handle(GetUserByIDQuery request, CancellationToken cancellationToken)
+            {
+                ApplicationUser appUser =  await _userManager.FindByIdAsync(request.UserId);
+                if (appUser == null) return null;
+                
+                return new UserDto(appUser, await _userManager.GetRolesAsync(appUser));
+            }
+
         }
     }
 }

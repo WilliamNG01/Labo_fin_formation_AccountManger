@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Helpers\Helpers.csproj" />
     <ProjectReference Include="..\JwtConfiguration\JwtConfiguration.csproj" />
   </ItemGroup>
 

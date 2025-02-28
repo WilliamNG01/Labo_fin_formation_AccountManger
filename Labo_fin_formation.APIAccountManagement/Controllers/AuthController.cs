@@ -3,6 +3,7 @@ using JwtConfiguration;
 using Labo_fin_formation.APIAccountManagement.Domain.Entities;
 using Labo_fin_formation.APIAccountManagement.Models.DTOs;
 using Labo_fin_formation.APIAccountManagement.Services;
+using Labo_fin_formation.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,11 +31,11 @@ public class AuthController : Controller
         _jwtTokenServices = jwtTokenServices;
     }
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginUserCommand model)
+    public async Task<IActionResult> Login([FromBody] LoginDto login)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        ApplicationUser user = await _mediator.Send(model);
+        ApplicationUser user = await _mediator.Send(new LoginUserCommand(login));
 
         if (user == null)
         {
@@ -44,14 +45,14 @@ public class AuthController : Controller
         // Générer le token JWT
         IList<string> userRoles = await _userManager.GetRolesAsync(user);
         var roles = _roleManager.Roles.Where(r => userRoles.Contains(r.Name)).OrderBy(x => x.RoleLevel).ToList();
-        user.UserName = user.UserName == null ? user.FirstName + user.LastName : user.UserName;
+        user.UserName = user.UserName ?? user.FirstName + user.LastName;
         var token = _jwtTokenServices.GenerateJwtToken(roles, user);
 
         return Ok(new
         {
             Token = token,
             Expiration = DateTime.UtcNow.AddHours(1),
-            user.UserName,
+            User = user.FirstName,
             Roles = roles
         });
     }
@@ -74,13 +75,13 @@ public class AuthController : Controller
         if(String.IsNullOrEmpty(model.model.Role))
             model.model.Role = _roleManager.Roles.Where(x => x.RoleLevel == 0).Select(x => x.Name).FirstOrDefault();
         else if(!(_roleManager.Roles.Any(x => x.Name == model.model.Role)))
-            return BadRequest("Erreur lors de l'enregistrement de l'utilisateur. Le role n'existe pas");
+            return BadRequest(ApiResponse<string>.ErrorResponse("Erreur lors de l'enregistrement de l'utilisateur. Le role n'existe pas"));
 
         string username = await _mediator.Send(model);
         if (username == null)
         {
-            return BadRequest("Erreur lors de l'enregistrement de l'utilisateur.");
+            return BadRequest(ApiResponse<string>.ErrorResponse("Erreur lors de l'enregistrement de l'utilisateur."));
         }
-        return Ok(new { Message = "Utilisateur créé avec succès.", UserName = username });
+        return Ok(ApiResponse<string>.SuccessResponse(username, "Utilisateur créé avec succès."));
     }
 }

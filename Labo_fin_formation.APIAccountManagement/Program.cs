@@ -1,20 +1,17 @@
+ï»¿using JwtConfiguration;
+using JwtConfiguration.Services;
 using Labo_fin_formation.APIAccountManagement.Domain.Entities;
 using Labo_fin_formation.APIAccountManagement.Infrastructure.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Labo_fin_formation.APIAccountManagement.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using JwtConfiguration;
-using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
-using Labo_fin_formation.APIAccountManagement.Services;
+using Labo_fin_formation.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Services de configuration
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LaboAdminConnectionString")));
 
@@ -23,19 +20,21 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
     options.SignIn.RequireConfirmedAccount = true;
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 8;
-    options.Lockout.MaxFailedAccessAttempts = 5; // Nombre de tentatives avant verrouillage
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(10); // Durée du verrouillage
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    //options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(10);
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-
-builder.Services.AddJwtAutnetication(builder.Configuration);
+//Authentification & Autorisation
 builder.Services.AddScoped<IJwtTokenServices, JwtTokenServices>();
+builder.Services.AddJwtAutnetication(builder.Configuration);
+builder.Services.AddScoped<IUserContextService, UserContextService>();
 
+builder.Services.AddAuthorization();
+
+//CORS
 string[] corsOrigins = builder.Configuration.GetSection("CorsSettings:AllowedOrigins").Get<string[]>();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", builder =>
@@ -47,58 +46,64 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers();
+//Logging
+builder.Services.AddLogging();
 
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+//Swagger (API documentation)
+builder.Services.AddSwaggerGen(options =>
 {
-    c.SchemaFilter<EmptyStringSchemaFilter>();
-    c.SchemaFilter<DefaultBooleanSchemaFilter>();
+    options.SchemaFilter<SwaggerFilters.EmptyStringSchemaFilter>();
+    options.SchemaFilter<SwaggerFilters.DefaultBooleanSchemaFilter>();
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter the token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[]{ }
+        }
+    });
 });
+
+//MediatR services
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+//Controllers
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    await IdentitySeeder.SeedRolesAsync(services);
-}
+
+
 app.UseCors("AllowSpecificOrigins");
 
-app.UseHttpsRedirection(); //seulement les requête HTTPS
 
+app.UseRouting();
+
+app.UseMiddleware<UserContextMiddleware>();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-
-public class EmptyStringSchemaFilter : ISchemaFilter
-{
-    public void Apply(OpenApiSchema schema, SchemaFilterContext context)
-    {
-        if (schema.Type == "string")
-        {
-            schema.Example = new OpenApiString("");
-        }
-    }
-}
-
-public class DefaultBooleanSchemaFilter : ISchemaFilter
-{
-    public void Apply(OpenApiSchema schema, SchemaFilterContext context)
-    {
-        if (schema.Type == "boolean")
-        {
-            schema.Default = new OpenApiBoolean(false);
-        }
-    }
-}
