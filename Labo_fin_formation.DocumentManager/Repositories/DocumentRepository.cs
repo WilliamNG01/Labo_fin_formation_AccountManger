@@ -1,18 +1,16 @@
 ﻿using Dapper;
 using Labo_fin_formation.DocumentManager.Models;
-using System;
-using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
+using System.Data.Common;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Labo_fin_formation.DocumentManager.Repositories;
 
 public class DocumentRepository: IDocumentRepository
 {
-    private readonly IDbConnection _dbConnection;
+    private readonly SqlConnection _dbConnection;
 
-    public DocumentRepository(IDbConnection dbConnection)
+    public DocumentRepository(SqlConnection dbConnection)
     {
         _dbConnection = dbConnection;
     }
@@ -44,6 +42,49 @@ public class DocumentRepository: IDocumentRepository
         };
 
         return await _dbConnection.QueryAsync<DocumentDTO>(query, parameters);
+    }
+    public async Task<IEnumerable<DocumentDTO>> GetAllDocumentsAsync()
+    {
+        //List<DocumentDTO> utilisateurs = new List<DocumentDTO>();
+
+        //using (SqlCommand command = _dbConnection.CreateCommand())
+        //{
+        //    command.CommandText = @"SELECT 
+        //                              d.Id, d.Name, d.Path, d.PriorityLevel, 
+        //                              d.CreatedBy, d.Name AS CreatedByName, d.CreatedAt,
+        //                              d.DeletedBy, d.DeletedAt, d.UpdatedBy, d.UpdatedAt
+        //                            FROM [fl_db_medical_documents].[dcmt].[Documents] d";
+        //    command.CommandType = CommandType.Text;
+
+        //    _dbConnection.Open();
+        //    using (SqlDataReader reader = command.ExecuteReader())
+        //    {
+        //        while (reader.Read())
+        //        {
+        //            utilisateurs.Add(
+        //                new DocumentDTO
+        //                {
+        //                    Name = reader.GetString("Name"),
+        //                    Path = reader.GetString("Path"),
+        //                    PriorityLevel = reader.GetString("PriorityLevel"),
+        //                    CreatedByName = reader.GetString("CreatedByName"),
+        //                }
+        //            );
+        //        }
+        //        _dbConnection.Close();
+        //        return utilisateurs;
+        //    }
+
+        //}
+
+        var query = @"SELECT 
+                        d.Id, d.Name, d.Path, d.PriorityLevel, 
+                        d.CreatedBy, d.Name AS CreatedByName, d.CreatedAt, 
+                        d.DeletedBy, d.DeletedAt, d.UpdatedBy, d.UpdatedAt
+                      FROM [fl_db_medical_documents].[dcmt].[Documents] d";
+
+        //var c =  await _dbConnection.QueryAsync(query);
+        return await _dbConnection.QueryAsync<DocumentDTO>(query);
     }
 }
 

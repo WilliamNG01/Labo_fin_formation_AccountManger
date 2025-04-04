@@ -59,6 +59,54 @@
         "AuthenticationProviderKey": [],
         "AllowedScopes": []
       }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Utilisateur/search",
+      "UpstreamPathTemplate": "/gateway/Utilisateur/search",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7236
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": [],
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Utilisateur/AllUsers",
+      "UpstreamPathTemplate": "/gateway/Utilisateur/AllUsers",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7236
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": [],
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/Documents/GetAllDocuments",
+      "UpstreamPathTemplate": "/gateway/Documents/GetAllDocuments",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7128
+        }
+      ],
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": [],
+        "AllowedScopes": []
+      }
     }
   ],
   "GlobalConfiguration": {

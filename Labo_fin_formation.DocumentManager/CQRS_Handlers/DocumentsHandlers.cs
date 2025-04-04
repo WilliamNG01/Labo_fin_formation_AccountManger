@@ -8,6 +8,16 @@ namespace Labo_fin_formation.DocumentManager.CQRS_Handlers;
 
 public class DocumentsHandlers
 {
+    public class GetAllDocumentsHandler(IDocumentRepository documentRepository) : IRequestHandler<GetALLDocumentsQuery, List<DocumentDTO>>
+    {
+        private readonly IDocumentRepository _documentRepository = documentRepository;
+
+        public async Task<List<DocumentDTO>> Handle(GetALLDocumentsQuery request, CancellationToken cancellationToken)
+        {
+            var documents = await _documentRepository.GetAllDocumentsAsync();
+            return (List<DocumentDTO>)documents;
+        }
+    }
     public class GetDocumentsHandler(IDocumentRepository documentRepository) : IRequestHandler<GetDocumentsQuery, List<DocumentDTO>>
     {
         private readonly IDocumentRepository _documentRepository = documentRepository;
