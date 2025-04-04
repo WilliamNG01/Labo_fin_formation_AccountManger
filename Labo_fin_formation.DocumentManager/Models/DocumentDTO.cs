@@ -5,7 +5,7 @@
         public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? Path { get; set; }
-        public string? ConfidentialityLevel { get; set; }
+        public string? PriorityLevel { get; set; }
         public Guid CreatedBy { get; set; }
         public string? CreatedByName { get; set; }
         public DateTime CreatedAt { get; set; }

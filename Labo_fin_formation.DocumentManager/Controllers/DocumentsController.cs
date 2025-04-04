@@ -1,5 +1,6 @@
 ﻿using Labo_fin_formation.DocumentManager.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ namespace Labo_fin_formation.DocumentManager.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class DocumentsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -20,8 +22,15 @@ public class DocumentsController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet]
-    [Authorize(Policy = "InternalDocumentsPolicy")]
+    [HttpGet("GetAllDocuments")]
+    [Authorize(Roles = "DefaultUser", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<IActionResult> GetAllDocuments()
+    {
+        var result = await _mediator.Send(new GetALLDocumentsQuery());
+        return Ok(result);
+    }
+    [HttpGet("GetFilteredDocuments")]
+    [Authorize(Policy = "InternalDocumentsPolicy", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> GetDocuments([FromQuery] DocumentFilter filter)
     {
         var result = await _mediator.Send(new GetDocumentsQuery(filter));
@@ -29,7 +38,7 @@ public class DocumentsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [Authorize(Policy = "MedicalRecordsPolicy")]
+    [Authorize(Policy = "MedicalRecordsPolicy", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> GetDocument(Guid id)
     {
         var result = await _mediator.Send(new GetDocumentByIdQuery(id));
@@ -38,7 +47,7 @@ public class DocumentsController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = "FullAccessPolicy")]
+    [Authorize(Policy = "FullAccessPolicy", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> CreateDocument([FromBody] CreateDocumentCommand command)
     {
         var documentId = await _mediator.Send(command);
@@ -46,7 +55,7 @@ public class DocumentsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Policy = "CoordinationPolicy")]
+    [Authorize(Policy = "CoordinationPolicy", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> UpdateDocument(Guid id, [FromBody] UpdateDocumentCommand command)
     {
         if (id != command.Id) return BadRequest();
@@ -55,7 +64,7 @@ public class DocumentsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = "SupplyChainPolicy")]
+    [Authorize(Policy = "SupplyChainPolicy", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<IActionResult> DeleteDocument(Guid id)
     {
         await _mediator.Send(new DeleteDocumentCommand(id));
