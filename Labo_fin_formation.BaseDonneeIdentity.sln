@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labo_fin_formation.Document
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.csproj", "{0DAA7AA1-4118-47AA-9DC1-BCFE12F41AF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labo_fin_formation.APIAccountManagement.Tests", "Labo_fin_formation.APIAccountManagement.Tests\Labo_fin_formation.APIAccountManagement.Tests.csproj", "{61BFB744-F9E6-4BE9-9E6C-83B3A432AF8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,8 +57,15 @@ Global
 		{0DAA7AA1-4118-47AA-9DC1-BCFE12F41AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DAA7AA1-4118-47AA-9DC1-BCFE12F41AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DAA7AA1-4118-47AA-9DC1-BCFE12F41AF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61BFB744-F9E6-4BE9-9E6C-83B3A432AF8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61BFB744-F9E6-4BE9-9E6C-83B3A432AF8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61BFB744-F9E6-4BE9-9E6C-83B3A432AF8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61BFB744-F9E6-4BE9-9E6C-83B3A432AF8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F259BCCC-1714-4E88-8065-94BCDBFFA589}
 	EndGlobalSection
 EndGlobal
