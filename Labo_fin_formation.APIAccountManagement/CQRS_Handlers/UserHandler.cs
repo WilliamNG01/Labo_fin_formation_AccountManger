@@ -5,6 +5,7 @@ using static Labo_fin_formation.APIAccountManagement.CQRS_Commands.UserCommands;
 using System.Threading.Tasks;
 using static Labo_fin_formation.APIAccountManagement.CQRS_Queries.GetUserQueries;
 using Labo_fin_formation.APIAccountManagement.Models.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace Labo_fin_formation.APIAccountManagement.CQRS_Handlers
 {
@@ -92,6 +93,31 @@ namespace Labo_fin_formation.APIAccountManagement.CQRS_Handlers
             }
         }
 
+        public class GetAllUserdHandler : IRequestHandler<GetAllUserQuery, List<UserDto>>
+        {
+            private readonly UserManager<ApplicationUser> _userManager;
+
+            public GetAllUserdHandler(UserManager<ApplicationUser> userManager)
+            {
+                _userManager = userManager;
+            }
+
+            public async Task<List<UserDto>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
+            {
+                List<ApplicationUser> appUsers = await _userManager.Users.ToListAsync(cancellationToken);
+                //if (appUser == null) return [];
+                //List<UserDto> listUser = (List<UserDto>)appUser.Select(user => new UserDto(user, _userManager.GetRolesAsync(user).Result));
+                //return listUser;
+                var userDtoTasks = appUsers.Select(async user =>
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+                    return new UserDto(user, roles);
+                });
+
+                return (await Task.WhenAll(userDtoTasks)).ToList();
+            }
+
+        }
         public class GetUserByIdHandler: IRequestHandler<GetUserByIDQuery, UserDto>
         {
             private readonly UserManager<ApplicationUser> _userManager;

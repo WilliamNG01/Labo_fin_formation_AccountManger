@@ -36,7 +36,7 @@ namespace Labo_fin_formation.APIAccountManagement.Controllers
             return Ok(user);
         }
         [HttpGet("AllUsers")]
-        [Authorize]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> AllUsers()
         {
 
@@ -44,7 +44,10 @@ namespace Labo_fin_formation.APIAccountManagement.Controllers
             {
                 return Unauthorized(new { error = "Vous devez être authentifié pour accéder à cette ressource." });
             }
-            return Ok();
+            var query = new GetAllUserQuery();
+            List<UserDto> users = await _mediator.Send(query);
+            if (users == null) { return NotFound(); }
+            return Ok(users);
         }
     }
 }
